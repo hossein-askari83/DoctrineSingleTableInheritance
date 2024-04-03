@@ -30,44 +30,41 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
-// class TranslationController extends Controller
-// {
-//     public function __construct(
-//         protected TranslationService $translationService,
-//         protected VerbService $verbService,
-//         protected NounService $nounService,
-//         protected AdjectiveService $adjectiveService,
-//     ) {
-//     }
+class TranslationController extends Controller
+{
+    public function __construct(
+        protected TranslationService $translationService,
+    ) {
+    }
 
-//     public function store(StoreTranslationRequest $request): JsonResponse
-//     {
+    public function store(Request $request): JsonResponse
+    {
 
-//         DB::beginTransaction();
-//         try {
-//             $translation = $this->translationService->store(TranslationDTO::fromRequest($request));
+        DB::beginTransaction();
+        try {
+            $translation = $this->translationService->store(TranslationDTO::fromRequest($request));
 
-//             switch ($request->get('translation_type')) {
-//                 case TranslationTypeEnum::Adjective->value:
-//                     $DTO = new AdjectiveDTO($request->get('superlative_form'), $request->get('comparative_form'), $translation->id);
-//                     $this->adjectiveService->store($DTO);
-//                     break;
-//                 case TranslationTypeEnum::Noun->value:
-//                     $DTO = new NounDTO($request->get('plural_form'), $translation->id);
-//                     $this->nounService->store($DTO);
-//                     break;
+            switch ($request->get('translation_type')) {
+                case TranslationTypeEnum::Adjective->value:
+                    $DTO = new AdjectiveDTO($request->get('superlative_form'), $request->get('comparative_form'), $translation->id);
+                    $this->adjectiveService->store($DTO);
+                    break;
+                case TranslationTypeEnum::Noun->value:
+                    $DTO = new NounDTO($request->get('plural_form'), $translation->id);
+                    $this->nounService->store($DTO);
+                    break;
 
-//                 case TranslationTypeEnum::Verb->value:
-//                     $DTO = new VerbDTO($request->get('past_form'), $translation->id);
-//                     $this->verbService->store($DTO);
-//                     break;
-//             }
-//             $message = __('general.created_successfully', ['model' => class_basename(Translation::class)]);
-//             DB::commit();
-//             return response()->json(['message' => $message, 'data' => TranslationResource::make($translation)], Response::HTTP_CREATED);
-//         } catch (\Throwable $th) {
-//             DB::rollBack();
-//             return response()->json(['message' => __('general.something_went_wrong'), 'data' => $th->getMessage()], Response::HTTP_SERVICE_UNAVAILABLE);
-//         }
-//     }
-// }
+                case TranslationTypeEnum::Verb->value:
+                    $DTO = new VerbDTO($request->get('past_form'), $translation->id);
+                    $this->verbService->store($DTO);
+                    break;
+            }
+            $message = __('general.created_successfully', ['model' => class_basename(Translation::class)]);
+            DB::commit();
+            return response()->json(['message' => $message, 'data' => TranslationResource::make($translation)], Response::HTTP_CREATED);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json(['message' => __('general.something_went_wrong'), 'data' => $th->getMessage()], Response::HTTP_SERVICE_UNAVAILABLE);
+        }
+    }
+}
