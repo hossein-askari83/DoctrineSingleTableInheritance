@@ -2,6 +2,8 @@
 
 <?php
 
+use App\Http\Controllers\API\V1\AdjectiveController;
+use App\Http\Controllers\API\V1\NounController;
 use App\Http\Controllers\API\V1\VerbController;
 use App\Http\Controllers\API\V1\WordController;
 use Illuminate\Http\Request;
@@ -28,6 +30,25 @@ Route::prefix('verb')->group(function () {
 });
 Route::prefix('word')->group(function () {
     Route::controller(WordController::class)->group(function () {
+        Route::post('/', 'store');
+        Route::get('/', 'index');
+        Route::put('/{id}', 'update');
+        Route::get('/{id}', 'show');
+        Route::delete('/{id}', 'delete');
+    });
+});
+Route::prefix('adjective')->group(function () {
+    Route::controller(AdjectiveController::class)->group(function () {
+        Route::post('/', 'store');
+        Route::get('/', 'index');
+        Route::put('/{id}', 'update');
+        Route::get('/{id}', 'show');
+        Route::delete('/{id}', 'delete');
+    });
+});
+
+Route::prefix('noun')->group(function () {
+    Route::controller(NounController::class)->group(function () {
         Route::post('/', 'store');
         Route::get('/', 'index');
         Route::put('/{id}', 'update');
