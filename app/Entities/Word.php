@@ -22,7 +22,10 @@ class Word implements JsonSerializable
      * @ORM\Column(type="integer")
      */
     private int $id;
-
+    public function getId(): string
+    {
+        return $this->id;
+    }
     /**
     * @ORM\OneToMany(targetEntity="Translation", mappedBy="word")
     */
