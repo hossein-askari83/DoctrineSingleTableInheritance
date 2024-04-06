@@ -12,7 +12,7 @@ use LaravelDoctrine\ORM\Facades\EntityManager;
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"translation" = "Translation", "verb" = "Verb","noun" = "Noun","adjective" = "Adjective"})
  */
-class Translation implements JsonSerializable
+class Translation
 {
 
    /**
@@ -20,16 +20,6 @@ class Translation implements JsonSerializable
    */
     private Word $word;
 
-
-    public function getWord():Word
-    {
-        return $this->word;
-    }
-
-    // public function setTitle(string $title): void
-    // {
-    //     $this->title = $title;
-    // }
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -43,6 +33,10 @@ class Translation implements JsonSerializable
     private string $title;
 
 
+    public function getId(): string
+    {
+        return $this->id;
+    }
     public function getTitle(): string
     {
         return $this->title;
@@ -53,11 +47,20 @@ class Translation implements JsonSerializable
         $this->title = $title;
     }
 
-    public function jsonSerialize() {
-        return [
-          'id' => $this->id,
-          'title' => $this->title,
-        ];
-      }
+    public function setWord(Word $word): void
+    {
+        $this->word = $word;
+    }
+    public function getWord()
+    {
+        return $this->word;
+    }
+
+    // public function jsonSerialize() {
+    //     return [
+    //       'id' => $this->id,
+    //       'title' => $this->title,
+    //     ];
+    //   }
 
 }

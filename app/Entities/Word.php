@@ -51,6 +51,11 @@ class Word implements JsonSerializable
     {
         return $this->translations;
     }
+    public function addTranslation(Translation $translation)
+    {
+        $translation->setWord($this);
+        $this->translations->add($translation);
+    }
     
     public function jsonSerialize() 
     {

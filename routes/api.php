@@ -2,6 +2,7 @@
 
 <?php
 
+use App\Http\Controllers\API\V1\VerbController;
 use App\Http\Controllers\API\V1\WordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,9 +17,21 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::get('word/{id}',[WordController::class,'show']);
-Route::get('words',[WordController::class,'index']);
-Route::post('word',[WordController::class,'store']);
-Route::put('word/{id}',[WordController::class,'update']);
-Route::delete('word/{id}',[WordController::class,'delete']);
+Route::prefix('verb')->group(function () {
+    Route::controller(VerbController::class)->group(function () {
+        Route::post('/', 'store');
+        Route::get('/', 'index');
+        Route::put('/{id}', 'update');
+        Route::get('/{id}', 'show');
+        Route::delete('/{id}', 'delete');
+    });
+});
+Route::prefix('word')->group(function () {
+    Route::controller(WordController::class)->group(function () {
+        Route::post('/', 'store');
+        Route::get('/', 'index');
+        Route::put('/{id}', 'update');
+        Route::get('/{id}', 'show');
+        Route::delete('/{id}', 'delete');
+    });
+});

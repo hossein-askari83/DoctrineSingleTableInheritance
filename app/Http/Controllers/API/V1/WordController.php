@@ -48,7 +48,6 @@ class WordController extends Controller
     {
         $word = $this->service->show($id);
         $message = __('general.fetched_successfully', ['model' => class_basename(Word::class)]);
-        // return response()->json(['message' => $message, 'data' => WordResource::make($word)], Response::HTTP_OK);
         return response()->json(['message' => $message, 'data' =>$word], Response::HTTP_OK);
     }
 }
